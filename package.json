@@ -1,0 +1,43 @@
+{
+  "name": "jss-sdk",
+  "version": "0.0.1",
+  "main": "lib/jss-sdk.js",
+  "description": "jingdong cloud storage service sdk.",
+  "homepage": "http://github.com/pingjiang/jss-sdk",
+  "bugs": "https://github.com/pingjiang/jss-sdk/issues",
+  "author": {
+    "name": "pingjiang",
+    "email": "pingjiang1989@gmail.com",
+    "url": "http://github.com/pingjiang"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pingjiang/jss-sdk"
+  },
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "jss-sdk",
+    "jae",
+    "storage",
+    "nodejs",
+    "rest"
+  ],
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "jshint-stylish": "^0.2.0",
+    "load-grunt-tasks": "^0.4.0",
+    "mocha": "^1.21.4",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "bin": {
+    "jss-sdk": "cli.js"
+  },
+  "preferGlobal": "true"
+}
