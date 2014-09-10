@@ -39,5 +39,8 @@
   "bin": {
     "jss-sdk": "cli.js"
   },
-  "preferGlobal": "true"
+  "preferGlobal": "true",
+  "dependencies": {
+    "restler": "^3.2.2"
+  }
 }
