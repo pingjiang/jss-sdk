@@ -19,6 +19,7 @@ describe('test jss', function(){
     jss.listBuckets(function(err, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
+      console.log('res: ', err, 'data: ', data);
       assert.ok(data.Buckets.length > 0);
       assert.equal("books", data.Buckets[0].Name);
       done();
@@ -64,6 +65,21 @@ describe('test jss', function(){
     });
   });
   
+  // it('should get object of bucket', function(done){
+  //   var filename = 'pub2me-logo-v3.png';
+  //   jss.getObject('books', filename, function(err, data) {
+  //     assert.equal(null, err);
+  //     assert.notEqual(null, data);
+  //     fs.writeFile('/Users/pingjiang/' + filename, data, function(err1) {
+  //       if (err1) {
+  //         return done(err1);
+  //       }
+  //       
+  //       done();
+  //     });
+  //   });
+  // });
+  
   it('should create bucket', function(done){
     // 201 Created
     jss.putBucket('books-test-test', function(err, data) {
@@ -91,18 +107,20 @@ describe('test jss', function(){
   
   // upload files into jss
   it('should upload file into bucket', function(done){
-    this.timeout(0);
+    this.timeout(10000);
     
     // { code: 'SignatureDoesNotMatch', message: 'The request signature we calculated does not match the signature you provided.', resource: '/books/cat.jpg/cat.jpg', requestId: '80A9F5B2DD9C74C7' }
     // { code: 'RequestTimeout', message: 'Your socket connection to the server was not read from or written to within the timeout period.', resource: '/books/cat.jpg/cat.jpg', requestId: 'A27DA928BFCF1708' }
     // {"code":"RequestTimeout","message":"Your socket connection to the server was not read from or written to within the timeout period.","resource":"/books/cat.jpg/cat.jpg","requestId":"8E42F0479BB7D155"}
-    fs.readFile('/Users/pingjiang/Pictures/cat.jpg', function(err, data) {
+    var filename = 'clsBtn.gif';
+    fs.readFile('/Users/pingjiang/Pictures/' + filename, function(err, data) {
       if (err) {
         console.log(err);
         return done();
       }
       
-      jss.putObject('/books/cat.jpg', 'cat.jpg', 'cat.jpg', data, function(err1, data) {
+      // cat.jpg, jss-logo.png, clsBtn.gif
+      jss.putObject('books', filename, filename, data, function(err1, data) {
         assert.notEqual(null, err1);
         console.log('res: ', err1, 'data: ', data);
         // assert.equal('InvalidBucketName', err.code);
