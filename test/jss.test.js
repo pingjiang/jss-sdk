@@ -3,19 +3,20 @@
 var assert = require('assert');
 var fs = require('fs');
 var JSSClient = require('../lib/jss');
-var config = require('../config.json');
-
-if (!config || (config.appKey === undefined || config.appSecret === undefined)) {
-  throw new Error('MUST configure appKey and appSecret inside config.json.');
-}
-
-var jss = new JSSClient(config);
 
 /**
  * Test.
  */
 describe('test jss', function(){
+  try {
+    var config = require('../config.json');
+  } catch(err) {
+    console.log(err);
+    return;
+  }
+  
   this.timeout(10000);
+  var jss = new JSSClient(config);
   
   it('should list buckets', function(done){
     
