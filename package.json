@@ -41,9 +41,7 @@
   },
   "preferGlobal": "true",
   "dependencies": {
-    "qs": "0.6.6",
-    "xml2js": "0.4.0",
-    "yaml": "0.2.3",
-    "iconv-lite": "0.2.11"
+    "jss-sign": "^0.9.0",
+    "request": "^2.42.0"
   }
 }

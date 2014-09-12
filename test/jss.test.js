@@ -16,10 +16,10 @@ describe('test jss', function(){
   
   it('should list buckets', function(done){
     // {"Buckets":[{"Name":"books","CreationDate":"Wed, 30 Jul 2014 03:24:44 GMT","Location":""},{"Name":"test1406738196593","CreationDate":"Wed, 30 Jul 2014 16:36:37 GMT","Location":""}]}
-    jss.listBuckets(function(err, data) {
+    jss.listBuckets(function(err, res, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
-      console.log('res: ', err, 'data: ', data);
+      // console.log('res: ', err, 'data: ', data);
       assert.ok(data.Buckets.length > 0);
       assert.equal("books", data.Buckets[0].Name);
       done();
@@ -28,18 +28,19 @@ describe('test jss', function(){
   
   it('should list objects of bucket', function(done){
     // {"Name":"books","Prefix":null,"Marker":null,"Delimiter":null,"MaxKeys":1000,"HasNext":false,"Contents":[{"Key":"pub2me-logo-v3.png","LastModified":"Wed, 30 Jul 2014 03:25:04 GMT","ETag":"cff23d5780e3b81fba2e7814354dff55","Size":1760}],"CommonPrefixes":[]}
-    jss.listObjects('books', function(err, data) {
+    jss.listObjects('books', function(err, res, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
       // console.log('res: ', data);
-      // assert.equal('pub2me-logo-v3.png', data.Contents[0].Key);
+      // pub2me-logo-v3.png
+      assert.equal('cat-put.jpg', data.Contents[0].Key);
       done();
     });
   });
   
   it('should not found bucket', function(done){
     // {"code":"NoSuchBucket","message":"The specified bucket does not exist.","resource":"/books-not-found","requestId":"81D22FC6523289C3"}
-    jss.listObjects('books-not-found', function(err, data) {
+    jss.listObjects('books-not-found', function(err, res, data) {
       assert.notEqual(null, err);
       // console.log('res: ', err, 'data: ', data);
       assert.equal('NoSuchBucket', err.code);
@@ -48,7 +49,7 @@ describe('test jss', function(){
   });
   
   it('should head object of bucket', function(done){
-    jss.headObject('books', 'pub2me-logo-v3.png', function(err, data) {
+    jss.headObject('books', 'pub2me-logo-v3.png', function(err, res, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
       done();
@@ -57,7 +58,7 @@ describe('test jss', function(){
   
   it('should not found object of bucket', function(done){
     // 404 Not Found
-    jss.headObject('books', 'object-not-found', function(err, data) {
+    jss.headObject('books', 'object-not-found', function(err, res, data) {
       assert.notEqual(null, err);
       // console.log('res: ', err, 'data: ', data);
       assert.equal('HTTP response code 404', err.message);
@@ -82,14 +83,14 @@ describe('test jss', function(){
   
   it('should create bucket', function(done){
     // 201 Created
-    jss.putBucket('books-test-test', function(err, data) {
+    jss.putBucket('books-test-test', function(err, res, data) {
       assert.equal(null, err);
       done();
     });
   });
   
   it('should delete bucket', function(done){
-    jss.deleteBucket('books-test-test', function(err, data) {
+    jss.deleteBucket('books-test-test', function(err, res, data) {
       assert.equal(null, err);
       done();
     });
@@ -97,7 +98,7 @@ describe('test jss', function(){
   
   it('should invalid bucket name', function(done){
     // {"code":"InvalidBucketName","message":"The specified bucket is not valid.","resource":"/.+","requestId":"96793B64BA6D0DEC"}
-    jss.putBucket('.+/', function(err, data) {
+    jss.putBucket('.+/', function(err, res, data) {
       assert.notEqual(null, err);
       // console.log('res: ', err, 'data: ', data);
       assert.equal('InvalidBucketName', err.code);
@@ -120,9 +121,9 @@ describe('test jss', function(){
       }
       
       // cat.jpg, jss-logo.png, clsBtn.gif
-      jss.putObject('books', filename, filename, data, function(err1, data) {
-        assert.notEqual(null, err1);
-        console.log('res: ', err1, 'data: ', data);
+      jss.putObject('books', filename, filename, data, function(err1, res, data) {
+        assert.equal(null, err1);
+        // console.log('res: ', err1, 'data: ', data);
         // assert.equal('InvalidBucketName', err.code);
         done();
       });
