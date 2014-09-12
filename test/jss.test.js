@@ -3,10 +3,13 @@
 var assert = require('assert');
 var fs = require('fs');
 var JSSClient = require('../lib/jss');
+var config = require('../config.json');
 
-var appKey = '49de4df0e7b54348a2f2b18304f5daff';
-var appSecret = '63c44a9c87274e5f8ad2b0577d9c97cd99KbnyPy';
-var jss = new JSSClient(appKey, appSecret);
+if (!config || (config.appKey === undefined || config.appSecret === undefined)) {
+  throw new Error('MUST configure appKey and appSecret inside config.json.');
+}
+
+var jss = new JSSClient(config);
 
 /**
  * Test.
@@ -15,11 +18,10 @@ describe('test jss', function(){
   this.timeout(10000);
   
   it('should list buckets', function(done){
-    // {"Buckets":[{"Name":"books","CreationDate":"Wed, 30 Jul 2014 03:24:44 GMT","Location":""},{"Name":"test1406738196593","CreationDate":"Wed, 30 Jul 2014 16:36:37 GMT","Location":""}]}
+    
     jss.listBuckets(function(err, res, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
-      // console.log('res: ', err, 'data: ', data);
       assert.ok(data.Buckets.length > 0);
       assert.equal("books", data.Buckets[0].Name);
       done();
@@ -27,7 +29,7 @@ describe('test jss', function(){
   });
   
   it('should list objects of bucket', function(done){
-    // {"Name":"books","Prefix":null,"Marker":null,"Delimiter":null,"MaxKeys":1000,"HasNext":false,"Contents":[{"Key":"pub2me-logo-v3.png","LastModified":"Wed, 30 Jul 2014 03:25:04 GMT","ETag":"cff23d5780e3b81fba2e7814354dff55","Size":1760}],"CommonPrefixes":[]}
+    
     jss.listObjects('books', function(err, res, data) {
       assert.equal(null, err);
       assert.notEqual(null, data);
@@ -39,10 +41,9 @@ describe('test jss', function(){
   });
   
   it('should not found bucket', function(done){
-    // {"code":"NoSuchBucket","message":"The specified bucket does not exist.","resource":"/books-not-found","requestId":"81D22FC6523289C3"}
-    jss.listObjects('books-not-found', function(err, res, data) {
+    
+    jss.listObjects('books-not-found', function(err) {
       assert.notEqual(null, err);
-      // console.log('res: ', err, 'data: ', data);
       assert.equal('NoSuchBucket', err.code);
       done();
     });
@@ -58,7 +59,7 @@ describe('test jss', function(){
   
   it('should not found object of bucket', function(done){
     // 404 Not Found
-    jss.headObject('books', 'object-not-found', function(err, res, data) {
+    jss.headObject('books', 'object-not-found', function(err) {
       assert.notEqual(null, err);
       // console.log('res: ', err, 'data: ', data);
       assert.equal('HTTP response code 404', err.message);
@@ -82,26 +83,26 @@ describe('test jss', function(){
   // });
   
   it('should create bucket', function(done){
-    // 201 Created
-    jss.putBucket('books-test-test', function(err, res, data) {
+    jss.putBucket('books-test-test', function(err, res) {
       assert.equal(null, err);
+      assert.equal(201, res.statusCode); // 201 Created
       done();
     });
   });
   
   it('should delete bucket', function(done){
-    jss.deleteBucket('books-test-test', function(err, res, data) {
+    jss.deleteBucket('books-test-test', function(err, res) {
       assert.equal(null, err);
+      assert.equal(204, res.statusCode); // 204 No Content
       done();
     });
   });
   
   it('should invalid bucket name', function(done){
-    // {"code":"InvalidBucketName","message":"The specified bucket is not valid.","resource":"/.+","requestId":"96793B64BA6D0DEC"}
-    jss.putBucket('.+/', function(err, res, data) {
+    jss.putBucket('.+/', function(err, res) {
       assert.notEqual(null, err);
-      // console.log('res: ', err, 'data: ', data);
       assert.equal('InvalidBucketName', err.code);
+      assert.equal(400, res.statusCode); // 400 Bad Request
       done();
     });
   });
@@ -109,10 +110,7 @@ describe('test jss', function(){
   // upload files into jss
   it('should upload file into bucket', function(done){
     this.timeout(10000);
-    
-    // { code: 'SignatureDoesNotMatch', message: 'The request signature we calculated does not match the signature you provided.', resource: '/books/cat.jpg/cat.jpg', requestId: '80A9F5B2DD9C74C7' }
-    // { code: 'RequestTimeout', message: 'Your socket connection to the server was not read from or written to within the timeout period.', resource: '/books/cat.jpg/cat.jpg', requestId: 'A27DA928BFCF1708' }
-    // {"code":"RequestTimeout","message":"Your socket connection to the server was not read from or written to within the timeout period.","resource":"/books/cat.jpg/cat.jpg","requestId":"8E42F0479BB7D155"}
+
     var filename = 'clsBtn.gif';
     fs.readFile('/Users/pingjiang/Pictures/' + filename, function(err, data) {
       if (err) {
@@ -121,13 +119,12 @@ describe('test jss', function(){
       }
       
       // cat.jpg, jss-logo.png, clsBtn.gif
-      jss.putObject('books', filename, filename, data, function(err1, res, data) {
-        assert.equal(null, err1);
-        // console.log('res: ', err1, 'data: ', data);
-        // assert.equal('InvalidBucketName', err.code);
+      jss.putObject('books', filename, filename, data, function(err, res) {
+        assert.equal(null, err);
+        assert.equal(200, res.statusCode);
         done();
       });
-    })
+    });
   });
   
 });

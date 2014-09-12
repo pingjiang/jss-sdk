@@ -5,9 +5,6 @@
 var assert = require('assert');
 var utils = require('../lib/utils');
 
-var appKey = '49de4df0e7b54348a2f2b18304f5daff';
-var appSecret = '63c44a9c87274e5f8ad2b0577d9c97cd99KbnyPy';
-
 String.prototype.times = function(n) {
   var val = this;
   var buf = '';
@@ -35,31 +32,6 @@ describe('test generateString', function(){
     assert.equal('0', generateString(1));
     assert.equal('0123456789', generateString(10));
     assert.equal('01234567890', generateString(11));
-    
-    done();
-  });
-});
-
-
-describe('test canonicalizeHeader', function(){
-  it('should canonicalize Header', function(done){
-    
-    assert.equal('x-jingdong-meta-row:abc,bcd\n', 
-      utils.canonicalizeHeader('x-jingdong-meta-row: abc, x-jingdong-meta-row: bcd'));
-    
-    done();
-  });
-});
-
-describe('test signHeader', function(){
-  it('should signHeader', function(done){
-    
-    // assert.equal('jingdong 49de4df0e7b54348a2f2b18304f5daff:EAgQmqZu4oHH3EA830pfOG9bNug=', 
-    //   utils.signHeader('GET', '/', {
-    //   'x-jingdong-meta-row': 'abc', 
-    //   'x-jingdong-meta-col': 'bcd'
-    //   }, appKey, appSecret)
-    // );
     
     done();
   });

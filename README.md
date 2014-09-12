@@ -8,8 +8,16 @@
 Install the module with: `npm install jss-sdk`
 
 ```js
-var jss = require('jss');
-jss.awesome(); // "awesome"
+var JSSClient = require('jss-sdk');
+
+// pass appKey and appSecret.
+var client = new JSSClient('your appkey', 'your appSecret');
+
+// pass optional defaults of Request.
+var client = new JSSClient('your appKey', 'your appSecret', { followRedirect: true });
+
+// pass defaults with appKey and appSecret.
+var client = new JSSClient({ appKey: 'your appKey', appSecret: 'your appSecret' });
 ```
 
 Install with cli command
@@ -26,12 +34,12 @@ $ jss --version
 京东云存储-NodeJS SDK 
 
 ### 系统要求
-京东云存储PHP SDK 需要CURL 库支持, 在使用前请检查您系统中安装的PHP 是否已支
-持PHP CURL。
+京东云存储NodeJS SDK 需要Request库支持, 在使用前请检查您系统中安装的NodeJS是否已支持NodeJS Request。
 
 ### 基本概念
 #### AccessKey && AccessSecret 
-京东云存储所有API 操作都需要对请求做AccessSecret 签名的校验，摘要字段将作为请求头发送给云存储系统，所以在使用PHP SDK 时必须先设定有效的AccessKey 和AccessSecret。
+
+京东云存储所有API 操作都需要对请求做AccessSecret 签名的校验，摘要字段将作为请求头发送给云存储系统，所以在使用NodeJS SDK 时必须先设定有效的AccessKey 和AccessSecret。
 
 > **AccessKey** 由京东云存储颁发，用于标识用户的唯一身份。AccessKey 在所有的操作中都会被使用，并且以明文形式传输。
 > 
@@ -71,57 +79,9 @@ Object 命名规则:
 **注意：** 同一Bucket 下的Object 名称必须唯一！ 
 
 
-### PHP SDK 概述
+### NodeJS SDK 文档
 
-京东云存储PHP SDK 为多个文件，核心文件为JDCloudStorage.php，通常您只需要导入该文件便可完成所有SDK 目前能提供的所有接口。
- 
-```
-
-```
-
-### PHP SDK 文档
-
-PHP SDK 定义了三个用于云存储的对象： 
-
-* JSSBucket：每个JSSBucket 对象表示一个京东云存储Bucket； 
-* JSSObject：每个JSSObject 对象表示一个京东云存储Object； 
-* JSSEntity：每个JSSEntity 对象表示一个京东云存储Bucket 及其包含的Object 列表的集合； 
-
-PHP SDK 定义了一个通用的异常对象： 
-
-* JSSError：每个请求对应的非20x 响应（http status code 不在200~299 之间）都会转换成一个JSSError 异常对象并抛出； 
-
-PHP SDK 定义了两个辅助的HTTP 对象
-
-* JSSRequest：几乎封装了所有的HTTP 请求，用户不需要关心。
-* JSSResponse：封装了SDK 中http 请求的返回信息，包括response_code,response body,response header 三个基本信息维护。
-
-PHP SDK 定义了一个文件类型辅助对象： 
-
-* JSSMIME：你可以调用JSSMIME::get_type($file_extension)根据文件扩展名获取其
-对应的类型； 
-
-**注意：** PHP SDK 中所有的API 调用只有在成功时才返回正确的数据，其他任何错误都将以异常的形态抛出！
- 
-#### 通用接口
-##### 初始化JDCloudStorage 对象
- 
-
-```
-
-```
-
-##### JSSError 异常信息
-对象定义： 
-在访问云存储过程中，所有没有能够正常完成服务请求的操作，都会返回JSSError,该Exception 是由Exception 派生而来，JSSError 的对象中， 并会得出以下由存储服务器获得到的错误返回的响应：错误码，错误信息，请求资源，请求ID。
-
-代码示例：
- 
-例如在创建2 次Bucket 时候,代码如下
-
-```
-
-```
+NodeJS SDK 中所有的API 调用只有在成功时才返回正确的数据，其他任何错误都将以异常的形态抛出！请检查回调函数的第一个参数。
 
 #### Service 相关接口
 ##### 获取所有Bucket 
@@ -130,7 +90,15 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.listBuckets(function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+  
+  for (var bucket in data.Buckets) {
+    console.log(bucket.Name);
+  }
+});
 ```
 
 #### Bucket 相关接口
@@ -140,7 +108,11 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.putBucket('bucket-test', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+});
 ```
 
 ##### 删除指定Bucket 
@@ -151,7 +123,11 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.deleteBucket('bucket-test', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+});
 ```
 
 ##### 列出指定Bucket 下Objects 
@@ -160,7 +136,15 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.listObjects('bucket-test', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+  
+  for (var obj in data.Contents) {
+    console.log(obj.Key);
+  }
+});
 ```
 
 #### Object 相关接口
@@ -170,7 +154,19 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+fs.readFile('test-object.jpg', function(err, data) {
+  if (err) {
+    throw err;
+  }
+  var key = filename = 'test-object-key.jpg';
+  client.putObject('bucket-test', key, filename, data, function(err, res, data) {
+    if (err) {
+      throw err;
+    }
+  
+    console.log('Upload ', key, ' success');
+  });
+});
 ```
 
 **注意：** 如果Bucket 下已存在$name 对象，此操作将会失败。
@@ -183,7 +179,21 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+  
+  fs.writeFile('test-object-key.jpg', data, {
+    encoding: 'binary'
+  }, function(err) {
+    if (err) {
+      throw err;
+    }
+    
+    console.log('Write ', data.length, ' bytes sucsess.');
+  });
+});
 ```
 
 **注意：**如果$localfile 已存在，此操作将会覆盖本地文件。
@@ -205,7 +215,15 @@ PHP SDK 定义了一个文件类型辅助对象：
  
 
 ```
-
+client.headObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+  
+  for (var header in res.headers) {
+    console.log(header);
+  }
+});
 ```
 
 ##### 删除Object 
@@ -214,7 +232,13 @@ PHP SDK 定义了一个文件类型辅助对象：
 
 
 ```
-
+client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
+  if (err) {
+    throw err;
+  }
+  
+  console.log('Delete sucsess.');
+});
 ```
 
 #### Multipart Upload 相关接口
@@ -280,10 +304,6 @@ PHP SDK 定义了一个文件类型辅助对象：
 ```
 
 ```
-
-## Examples
-
-_(Coming soon)_
 
 
 ## Contributing
