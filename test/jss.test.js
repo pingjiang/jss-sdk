@@ -8,8 +8,9 @@ var JSSClient = require('../lib/jss');
  * Test.
  */
 describe('test jss', function(){
+  var config;
   try {
-    var config = require('../config.json');
+    config = require('../config.json');
   } catch(err) {
     console.log(err);
     return;
