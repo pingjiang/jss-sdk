@@ -5,7 +5,13 @@
 
 ## Getting Started
 
-Install the module with: `npm install jss-sdk`
+Install the module with npm.
+
+```sh
+$ npm install jss-sdk --save
+```
+
+Create your own JSS client.
 
 ```js
 var JSSClient = require('jss-sdk');
@@ -89,7 +95,7 @@ NodeJS SDK 中所有的API 调用只有在成功时才返回正确的数据，�
 该接口对应于API 中的GET Service,可以通过该接口获得用户的所有Bucket 信息
  
 
-```
+```js
 client.listBuckets(function(err, res, data) {
   if (err) {
     throw err;
@@ -107,7 +113,7 @@ client.listBuckets(function(err, res, data) {
 该接口对应于京东云存储API 中的PUT Bucket 接口，该接口可以创建一个新的Bucket 
  
 
-```
+```js
 client.putBucket('bucket-test', function(err, res, data) {
   if (err) {
     throw err;
@@ -122,7 +128,7 @@ client.putBucket('bucket-test', function(err, res, data) {
 **注意：**必须确保要删除的Bucket 中没有任何数据。
  
 
-```
+```js
 client.deleteBucket('bucket-test', function(err, res, data) {
   if (err) {
     throw err;
@@ -135,7 +141,7 @@ client.deleteBucket('bucket-test', function(err, res, data) {
 该接口对应于京东云存储API 的Get Bucket 接口，通过该接口可以获得指定Bucket 中的Object 信息列表，请求时可以通过一些查询条件来限制返回的结果。
  
 
-```
+```js
 client.listObjects('bucket-test', function(err, res, data) {
   if (err) {
     throw err;
@@ -153,7 +159,7 @@ client.listObjects('bucket-test', function(err, res, data) {
 该接口对应于京东云存储API 中的PUT OBJECT 接口，该接口用来上传一个新的Object 到指定的Bucket 中，数据的最大长度限制为5GB。
  
 
-```
+```js
 fs.readFile('test-object.jpg', function(err, data) {
   if (err) {
     throw err;
@@ -178,7 +184,7 @@ fs.readFile('test-object.jpg', function(err, data) {
 该接口对应京东云存储API 的GET OBJECT 接口，可通过该接口获取指定Object 内容
  
 
-```
+```js
 client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
   if (err) {
     throw err;
@@ -205,7 +211,7 @@ client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) 
 该接口用于获取Object 的资源链接URI，可通过设置参数expire 设定链接的过期时间。
  
 
-```
+```js
 
 ```
 
@@ -214,7 +220,7 @@ client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) 
 该接口对应于京东云存储API 的HEAD Object 接口，通过该接口可以获取指定Object 的元数据信息。
  
 
-```
+```js
 client.headObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
   if (err) {
     throw err;
@@ -230,8 +236,7 @@ client.headObject('bucket-test', 'test-object-key.jpg', function(err, res, data)
 
 该接口对应于京东云存储API 的DELETE Object 接口，用于删除指定的Object 
 
-
-```
+```js
 client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, data) {
   if (err) {
     throw err;
@@ -247,7 +252,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的multipart 相关接口，用于使用Multipart Upload 上传一个大文件。
  
 
-```
+```js
 
 ```
 
@@ -256,7 +261,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的init multipart upload 接口，用于初始化一个分块上传。
  
 
-```
+```js
 
 ```
 
@@ -265,7 +270,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的Upload Part 接口，用于向一个指定uploadID 的MultipartUpload 上传一个分块。
  
 
-```
+```js
 
 ```
 
@@ -274,7 +279,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的List Part 接口，用于获取一个指定uploadID 的MultipartUpload 所有已上传的分块列表。
  
 
-```
+```js
 
 ```
 
@@ -283,7 +288,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的Abort MultipartUpload 接口，用于删除一个指定uploadId 所在的MultipartUpload. 
  
 
-```
+```js
 
 ```
 
@@ -292,7 +297,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的Complete MultipartUpload 接口，用于完成一个指定uploadId 所在的MultipartUpload. 
 
 
-```
+```js
 
 ```
 
@@ -301,7 +306,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 该接口对应于京东云存储的List MultipartUpload 接口，用于获取一个指定Bucket 下所有未完成的MultipartUpload 对象信息
  
 
-```
+```js
 
 ```
 
