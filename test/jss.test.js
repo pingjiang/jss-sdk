@@ -125,8 +125,7 @@ describe('test jss', function(){
     var filename = 'clsBtn.gif';
     fs.readFile('/Users/pingjiang/Pictures/' + filename, function(err, data) {
       if (err) {
-        console.log(err);
-        return done();
+        return done(err);
       }
       
       // cat.jpg, jss-logo.png, clsBtn.gif
@@ -137,6 +136,23 @@ describe('test jss', function(){
       });
     });
   });
+  
+  // 还没有调通
+  // it('should upload object multiple', function(done){
+  //   this.timeout(600000);
+  // 
+  //   var filename = 'jss-test.pcapng'; // 'macx-softlist.xml'; 
+  //   jss.uploadObject("books", "m-" + filename, '/Users/pingjiang/' + filename, { 
+  //     partSize: 500*1024 
+  //   }, function(err, res) {
+  //     if (err) {
+  //       return done(err);
+  //     }
+  //     
+  //     // console.log(data);
+  //     done();
+  //   });
+  // });
   
 });
 
