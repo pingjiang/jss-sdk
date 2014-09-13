@@ -1,6 +1,8 @@
 # 京东云存储-NodeJS SDK (jss-sdk) [![Build Status](https://secure.travis-ci.org/pingjiang/jss-sdk.png?branch=master)](http://travis-ci.org/pingjiang/jss-sdk)
 
-> Jingdong cloud storage service sdk.
+京东云存储的一些基本概念请参考[wiki](https://github.com/pingjiang/jss-sdk/wiki)。
+
+京东云存储控制台：[http://man.jcloud.com/appengine/jae/console/addons/jss](http://man.jcloud.com/appengine/jae/console/addons/jss)。
 
 
 ## 快速入门
