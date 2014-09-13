@@ -2,6 +2,7 @@
 
 var assert = require('assert');
 var fs = require('fs');
+var url = require('url');
 var JSSClient = require('../lib/jss');
 
 /**
@@ -52,11 +53,18 @@ describe('test jss', function(){
   });
   
   it('should head object of bucket', function(done){
-    jss.headObject('books', 'pub2me-logo-v3.png', function(err, res, data) {
+    jss.headObject('books', 'pub2me-logo-v3.png', function(err, res) {
       assert.equal(null, err);
-      assert.notEqual(null, data);
+      assert.ok('content-type' in res.headers);
       done();
     });
+  });
+  
+  it('should generate signed url', function(done){
+    var signedUrl = jss.signedUrl('GET', 'books', 'cat.jpg');
+    var signedUri = url.parse(signedUrl);
+    assert.equal('/books/cat.jpg', signedUri.pathname);
+    done();
   });
   
   it('should not found object of bucket', function(done){
@@ -69,20 +77,21 @@ describe('test jss', function(){
     });
   });
   
-  // it('should get object of bucket', function(done){
-  //   var filename = 'pub2me-logo-v3.png';
-  //   jss.getObject('books', filename, function(err, data) {
-  //     assert.equal(null, err);
-  //     assert.notEqual(null, data);
-  //     fs.writeFile('/Users/pingjiang/' + filename, data, function(err1) {
-  //       if (err1) {
-  //         return done(err1);
-  //       }
-  //       
-  //       done();
-  //     });
-  //   });
-  // });
+  // download file
+  it('should get object of bucket', function(done){
+    var filename = 'pub2me-logo-v3.png';
+    jss.getObject('books', filename, function(err, res, data) {
+      assert.equal(null, err);
+      assert.notEqual(null, data);
+      fs.writeFile('/Users/pingjiang/' + filename, data, { encoding: 'binary' }, function(err) {
+        if (err) {
+          return done(err);
+        }
+        
+        done();
+      });
+    });
+  });
   
   it('should create bucket', function(done){
     jss.putBucket('books-test-test', function(err, res) {

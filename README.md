@@ -3,15 +3,15 @@
 > Jingdong cloud storage service sdk.
 
 
-## Getting Started
+## 快速入门
 
-Install the module with npm.
+使用`npm`安装依赖：
 
 ```sh
 $ npm install jss-sdk --save
 ```
 
-Create your own JSS client.
+创建`JSSClient`：
 
 ```js
 var JSSClient = require('jss-sdk');
@@ -26,7 +26,7 @@ var client = new JSSClient('your appKey', 'your appSecret', { followRedirect: tr
 var client = new JSSClient({ appKey: 'your appKey', appSecret: 'your appSecret' });
 ```
 
-Install with cli command
+安装命令行工具：
 
 ```sh
 $ npm install -g jss-sdk
@@ -311,10 +311,24 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
 ```
 
 
-## Contributing
+## 参与开发
 
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com).
+使用`Grunt`执行Lint检查：
 
+```sh
+$ grunt
+```
+
+**注意：** 请提交前Lint并测试你的代码。
+
+使用mocha执行测试用例：
+
+```sh
+$ mocha
+$ mocha -g 'signed url'
+```
+
+**注意：** 现在用例还不是很规范，需要自己增加config.json以及增加相应的测试文件。
 
 ## License
 
