@@ -1,6 +1,6 @@
 {
   "name": "jss-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/jss-sdk.js",
   "description": "jingdong cloud storage service sdk.",
   "homepage": "http://github.com/pingjiang/jss-sdk",
