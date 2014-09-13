@@ -1,6 +1,6 @@
 {
   "name": "jss-sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/jss-sdk.js",
   "description": "jingdong cloud storage service sdk.",
   "homepage": "http://github.com/pingjiang/jss-sdk",
@@ -16,7 +16,8 @@
   },
   "license": "MIT",
   "files": [
-    "lib"
+    "lib",
+    "cli.js"
   ],
   "keywords": [
     "jss-sdk",
@@ -37,10 +38,11 @@
     "test": "mocha"
   },
   "bin": {
-    "jss-sdk": "cli.js"
+    "jss": "cli.js"
   },
   "preferGlobal": "true",
   "dependencies": {
+    "commander": "^2.3.0",
     "jss-sign": "^0.9.1",
     "request": "^2.42.0"
   }

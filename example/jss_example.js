@@ -16,9 +16,10 @@ client.listBuckets(function(err, res, data) {
     throw err;
   }
   
-  for (var bucket in data.Buckets) {
-    console.log(bucket.Name);
-  }
+  console.log('Found', data.Buckets.length, 'buckets.');
+  data.Buckets.forEach(function(bucket) {
+    console.log('Bucket:', bucket.Name);
+  });
 });
 
 // {"code":"InvalidBucketName","message":"The specified bucket is not valid.","resource":"/.+","requestId":"96793B64BA6D0DEC"}
@@ -42,9 +43,10 @@ client.listObjects('bucket-test', function(err, res, data) {
     throw err;
   }
   
-  for (var obj in data.Contents) {
-    console.log(obj.Key);
-  }
+  console.log('Found', data.Contents.length, 'objects.');
+  data.Contents.forEach(function(obj) {
+    console.log('Object:', obj.Key);
+  });
 });
 
 
@@ -53,8 +55,8 @@ client.headObject('bucket-test', 'test-object-key.jpg', function(err, res, data)
     throw err;
   }
   
-  for (var header in res.headers) {
-    console.log(header);
+  for (var key in res.headers) {
+    console.log(key, '=', res.headers[key]);
   }
 });
 

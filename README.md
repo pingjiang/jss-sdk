@@ -119,9 +119,10 @@ client.listBuckets(function(err, res, data) {
     throw err;
   }
   
-  for (var bucket in data.Buckets) {
-    console.log(bucket.Name);
-  }
+  console.log('Found', data.Buckets.length, 'buckets.');
+  data.Buckets.forEach(function(bucket) {
+    console.log('Bucket:', bucket.Name);
+  });
 });
 ```
 
@@ -165,9 +166,10 @@ client.listObjects('bucket-test', function(err, res, data) {
     throw err;
   }
   
-  for (var obj in data.Contents) {
-    console.log(obj.Key);
-  }
+  console.log('Found', data.Contents.length, 'objects.');
+  data.Contents.forEach(function(obj) {
+    console.log('Object:', obj.Key);
+  });
 });
 ```
 
@@ -245,8 +247,8 @@ client.headObject('bucket-test', 'test-object-key.jpg', function(err, res, data)
     throw err;
   }
   
-  for (var header in res.headers) {
-    console.log(header);
+  for (var key in res.headers) {
+    console.log(key, '=', res.headers[key]);
   }
 });
 ```
@@ -263,6 +265,15 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
   
   console.log('Delete sucsess.');
 });
+```
+
+#### 生成用于外链的签名的URL
+
+默认Expires为5min。
+
+```js
+var signedUrl = client.signedUrl('GET', 'books', 'cat.jpg');
+console.log('Signed url: ', signedUrl);
 ```
 
 ### Multipart Upload 相关接口
