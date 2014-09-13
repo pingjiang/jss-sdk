@@ -97,3 +97,7 @@ client.deleteObject('bucket-test', 'test-object-key.jpg', function(err, res, dat
   
   console.log('Delete sucsess.');
 });
+
+// generate signed url
+var signedUrl = client.signedUrl('GET', 'books', 'cat.jpg');
+console.log('Signed url: ', signedUrl);

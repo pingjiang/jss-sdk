@@ -36,6 +36,25 @@ var client = new JSSClient({ appKey: 'your appKey', appSecret: 'your appSecret' 
 
 ## 实现的接口
 
+* Bucket
+  * listBuckets
+  * putBucket
+  * deleteBucket
+* Object
+  * listObjects
+  * headObject
+  * getObject
+  * putObject
+  * deleteObject
+  * signedUrl
+* Multipart upload object
+  * Init Multipart upload 
+  * Upload Part 
+  * List Parts 
+  * Abort MulitpartUplod 
+  * Complete MulitpartUplod 
+  * List MulitpartUplod 
+
 #### 获取所有Bucket 
 
 该接口对应于API 中的GET Service,可以通过该接口获得用户的所有Bucket 信息
@@ -158,7 +177,8 @@ client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) 
  
 
 ```js
-
+var signedUrl = client.signedUrl('GET', 'books', 'cat.jpg');
+console.log('Signed url: ', signedUrl);
 ```
 
 #### 获取Object 的meta 信息
