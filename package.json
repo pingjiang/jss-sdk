@@ -1,7 +1,6 @@
 {
   "name": "jss-sdk",
-  "version": "0.0.3",
-  "main": "lib/jss-sdk.js",
+  "version": "0.0.4",
   "description": "jingdong cloud storage service sdk.",
   "homepage": "http://github.com/pingjiang/jss-sdk",
   "bugs": "https://github.com/pingjiang/jss-sdk/issues",
@@ -34,6 +33,7 @@
     "mocha": "^1.21.4",
     "time-grunt": "^0.3.1"
   },
+  "main": "lib/jss.js",
   "scripts": {
     "test": "mocha"
   },
