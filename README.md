@@ -222,6 +222,15 @@ client.getObject('bucket-test', 'test-object-key.jpg', function(err, res, data) 
 });
 ```
 
+在Web应用里面，可以使用流直接pipe到客户端，这样就不必使用临时文件和占用大量内存。
+
+```js
+var bucket = req.params.bucket;
+var object = req.params.object;
+client.pipeObject(bucket, object, res);
+```
+
+
 **注意：**如果$localfile 已存在，此操作将会覆盖本地文件。
 **注意：**如果Object 大小太大，此接口调用可能会由于超时意外退出，请正确设置脚本超时时间（set_time_limit()）。
 
